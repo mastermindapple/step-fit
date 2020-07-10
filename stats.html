@@ -1,0 +1,106 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+<style>
+    body{
+        background-color: #0F1012;
+    }
+    .heads{
+        font-family: "Poppins";
+        color: #ff9400;
+        font-size: 35px;
+    }
+    .vals{
+        font-family: 'Poppins';
+        color: #b1b1b1;
+        font-size: 20px;
+        
+    }
+    .go-back{
+        width: 25px;
+        height: 35px;
+        background: url(backarrow.png);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-position: center;
+        float:left;
+        transform: translateX(20px) translateY(-80px);
+        transition: 0.6s;
+        }
+        #container{
+            margin-top: 100px;
+        }
+</style>
+    <body>     
+        <a href="homepage.html">
+            <div class="go-back">
+    
+            </div>
+            </a>
+            <div id="container">
+
+            </div>
+        <script>
+        const database = firebase.database();
+        const activeUsername = localStorage.getItem("step_fit_user_name_2277");
+        var stats;
+        var deletions = ["Workouts","multiplayer","password","searching","weight","workout_details"];
+        database.ref("/Users/"+activeUsername).on("value",snapshot=>{
+            stats = snapshot.val();
+        })
+        setTimeout(function(){
+           function getAvg(){
+               var workoutHist = ((stats.workout_history).toString()).split(",");
+               var sum = 0;
+               var avg;
+               for(var i=0; i<workoutHist.length; i++){
+                    sum += parseInt(workoutHist[i]);
+               }
+               avg = sum/workoutHist.length;;
+               return Math.floor(avg/60)+" Minutes " + Math.round(avg%60)+" Seconds"
+           }
+           const titles = ["Total Workout Time","Total Workouts","Average Workout Time","Total Rounds","Fastest Round","Longest Workout","Most Rounds in a Workout","Average Time taken to complete One round","Total Calories Burnt"];
+           const values = [Math.floor(stats.total_workout_time/60)+" Minutes  "+Math.round(stats.total_workout_time%60)+" Seconds",
+           stats.total_workouts,
+           getAvg(),
+           stats.total_rounds,
+           Math.floor(stats.minimum/60)+ " Minutes "+Math.round(stats.minimum%60)+" Seconds",
+           Math.floor(stats.personal_best/60)+" Minutes "+Math.round(stats.personal_best%60)+" Seconds",
+           stats.personal_best_rounds,
+           Math.floor((stats.total_workout_time/stats.total_rounds)/60)+" Minutes "+Math.round((stats.total_workout_time/stats.total_rounds)%60)+" Seconds ",
+           stats.total_cals];
+           for(var i=0; i<titles.length; i++){
+               var heading = document.createElement("h1");
+               var value = document.createElement("span");
+               var seperator = document.createElement("hr");
+               heading.classList = "heads";
+               value.classList = "vals";
+               heading.innerHTML = (titles[i]+": ");
+               value.innerHTML =  (values[i]+"<br>");
+               document.getElementById("container").appendChild(heading);
+               document.getElementById("container").appendChild(value);
+               document.getElementById("container").appendChild(seperator);
+           }
+        },3000);
+        </script>
+    </body>
+</html>

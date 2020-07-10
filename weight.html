@@ -1,0 +1,97 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
+    <style>
+        body{
+            background-color: #0f0102;
+        }
+        input{
+            height: 200px;
+            width: 800px;
+            font-family: 'Poppins';
+            text-align: center;
+            font-size: 50px;
+            color: #ff9400;
+            transition: 0.6s;
+        }
+        input:focus{
+            transform: translateY(-10px);
+                -moz-box-shadow: 0px 3px 8px black;
+                -webkit-box-shadow: 0px 3px 8px black;
+                box-shadow: 0px 3px 8px black;
+        }
+        .note{
+            color: #ff9400;
+            font-family: 'Poppins';
+            font-size: 30px;
+        }
+        #btn{
+            background-color: white;
+            height: 90px;
+            width: 90px;
+            border-radius: 50%;
+            transition: 0.6s;
+        }
+        .btn-text{
+            font-family: 'Poppins';
+            color: #ff9400;
+            font-size: 30px;
+        }
+        #btn:hover{
+            cursor: pointer;
+                transform: translateY(-10px);
+                -moz-box-shadow: 0px 3px 8px black;
+                -webkit-box-shadow: 0px 3px 8px black;
+                box-shadow: 0px 3px 8px black;
+        }
+    </style>
+    </head>
+    <body>
+        <center>
+        <input type="text" id="weight" placeholder="Weight in kg">
+        <br>
+        <br>
+        <div id="btn">
+            <span class="btn-text">
+                GO!
+            </span>
+        </div>
+        <div class="note">
+            We will only use this imformation to make your statistics more accurate.
+        </div>
+        </center>
+        <script>
+            var database = firebase.database();
+            var user = localStorage.getItem("step_fit_user_name_2277");
+            document.getElementById("btn").addEventListener("click",(e)=>{
+                e.preventDefault();
+                var weight = document.getElementById("weight").value;
+                database.ref("/Users/"+user+"/").update({
+                    weight: parseInt(weight)
+                })
+                .then(function(){
+                    localStorage.setItem("weight_input","done");
+                })
+                alert("Please wait while we move you to the next page.");               
+                setTimeout(function(){
+                    location.replace("home.html");
+                },3000)
+            })
+        
+        </script>
+    </body>
+</html>

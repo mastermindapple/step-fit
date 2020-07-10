@@ -1,0 +1,227 @@
+<html>
+    <head>    
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+            <style>
+                body{
+                    margin: 0%;
+                    padding: 0px;
+                    width: 100%;
+                }
+                .background{
+                width: 100%;
+                height: 100%;
+                background-color: #0F1012;
+                background-size: 100% 100%;
+                 background-position: center;
+                }
+
+                .chart{
+                    width: 760px;
+                height: 460px;
+                background: url(homepagelogo.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-position: center;
+            transform: translateY(-140px);
+                }
+                #btn{
+            height: 115px;
+            width: 115px;
+            background-color: white;
+            text-align: center;
+            border-radius: 50%;
+            transition: 0.6s;
+            transform: translateX(300px) translateY(210px);
+            transition: 0.6s;
+                }
+                #btn:hover{
+                    cursor: pointer;
+                    background-color: rgb(149,153,152);
+                }
+               #usernameInput{
+                   border: none;
+                   height: 38px;
+                   width: 217px;
+                   font-size: 20px;
+                   transform: translateX(78px) translateY(221px);
+                   background-color: #D5D5D5;
+                   color: #FF9400;
+                   font-family: 'Poppins';
+               }
+               #password{
+                   border: none;
+                   height: 38px;
+                   width: 217px;
+                font-size: 20px;
+                color: #FF9400;
+                transform: translateX(-78px) translateY(239px);
+                   background-color: #D5D5D5;
+                   font-family: 'Poppins';
+               }
+
+
+               .nin{
+                   color: #FF9400;
+                   font-size: 30px;
+                   transform: translateY(30px);
+                   font-family: 'Poppins';
+               }
+
+               .header{
+                   color:#B1B1B1;
+                   font-family: 'Poppins';
+                   transform: translateY(00px);
+                   font-size: 40px;
+               }
+               .inn{
+                   color: #FF9400;
+               }
+               .usertame{
+                   color: #B1B1B1;
+                   font-family: 'Poppins';
+                    transform: translateX(-160px) translateY(210px);
+               }
+               .pattword{
+                color: #B1B1B1;
+                   font-family: 'Poppins';
+                    transform: translateX(-300px) translateY(200px);
+               }
+
+
+               .journey{
+                color: #9B9796;
+                font-family: 'Poppins';
+                font-size: 20px; 
+                transform: translateY(-25px);
+            }
+            .or-signup{
+                color:#B1B1B1;
+                    font-family: 'Poppins';
+                    font-size: 25px;
+                    text-decoration: underline #FF9400;
+                    font-weight: bold;
+                    transition: 0.6s
+            }
+            .or-signup:hover{
+                color: #FF9400;
+                text-decoration: underline #B1B1B1;
+            }
+
+            </style>
+    </head>
+    <body>
+        <center>
+            <div class="background">
+               <center>
+                   <h1 class="header" id="header">
+                       Log <span class="inn">in</span>
+                   </h1>
+                   <p class="journey" id="journey">
+                    to continue your journey
+                    </p>
+                    
+                        <a href="signup.html" class="or-signup" id="or">
+                            Or Sign Up
+                        </a>
+                    
+               </center>
+               <h1 class="usertame">
+                   Username:
+               </h1>
+               <h1 class="pattword">
+                   Password:
+               </h1>
+                <div class="chart">
+                    <div class="username">
+                <input type="text" id="usernameInput" placeholder="Enter Your Username">
+                </div>
+                <div class="password">                 
+                <input type="password" id="password" placeholder="Password">
+                </div>
+                <div id="btn">
+                    <p class="nin">
+                    GO!
+                    </p>
+                </div>
+</div>
+</center>
+        <script>
+const user = localStorage.getItem("step_fit_user_name_2277");
+const database = firebase.database();
+var keys;
+var authPassword;
+// Redirect, if logged in
+    if(user !== null){
+        location.replace("home.html")
+    }
+
+document.getElementById("btn").addEventListener("click",(e) =>{
+     e.preventDefault();
+     var usernameInput = document.getElementById("usernameInput").value;
+     var password = document.getElementById("password").value;
+
+     if(!usernameInput || !password){
+           alert("Please fill all the fields");
+       }
+
+       else{
+        document.getElementById("header").innerHTML = ("Please wait for a while");
+        document.getElementById("journey").innerHTML = ("");
+        document.getElementById("or").innerHTML = ("");
+
+        database.ref("/Users/").on("value", snapshot => {
+            keys = snapshot.val();
+        })
+        setTimeout(play,3000)
+    }
+        function play(){
+            keys = Object.keys(keys);
+                if(keys.includes(usernameInput)){             
+                    database.ref("/Users/"+usernameInput+"/password").on("value", snapshot =>{
+                    authPassword = snapshot.val();
+                    })
+
+                    setTimeout(function(){
+                        if(password == authPassword){
+                            window.localStorage.setItem("step_fit_user_name_2277",usernameInput);
+                            location.replace("home.html");
+                        }
+                        else{
+                            alert("Invalid username or password.");
+                            document.getElementById("header").innerHTML = ("Log in");
+                            document.getElementById("journey").innerHTML = ("to continue your journey");
+                            document.getElementById("or").innerHTML = ("Or Signup");
+                        }
+                    })
+                }
+                else{
+                    alert("Invalid Username or password.");
+                    document.getElementById("header").innerHTML = ("Log in");
+                    document.getElementById("journey").innerHTML = ("to continue your journey");
+                    document.getElementById("or").innerHTML = ("Or Signup");
+                }
+        }
+
+})          
+        </script>
+    </body>
+</html>

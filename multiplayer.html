@@ -1,0 +1,128 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+<style>
+        .go-back{
+            width: 25px;
+                height: 35px;
+                background: url(backarrow.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-position: center;
+
+                float:left;
+                transform: translateX(40px) translateY(50px);
+                transition: 0.6s;
+        }
+</style>
+    </head>
+    <body>
+        <a href="homepage.html">
+            <div class="go-back">
+    
+            </div>
+            </a>
+        <center>
+            <h1>
+                This Page is Under Development.
+            </h1>
+        </center>
+        <script>
+var database = firebase.database();
+var activeUser = localStorage.getItem("step_fit_user_name_2277");
+document.body.onload = function(){
+    database.ref("/Users/"+activeUser).update({
+        searching: true
+    });
+}
+var users;
+var usernames;
+var searchers = [];
+var bestMatch;
+database.ref("/Users/").on("value",snapshot=>{
+    users = snapshot.val();
+})
+setTimeout(function(){
+    usernames = Object.keys(users)
+    for(var i=0; i<Object.keys(users).length; i++){
+        if(users[usernames[i]].searching ===  true){
+            searchers.push(usernames[i]);
+        }
+    }
+},3000);
+function getBestMatch(){
+    searchers.splice(searchers.indexOf(activeUser),1);
+    var match;
+    var timeDifs = [];
+    var leastTime = 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
+    for(var i=0; i<searchers.length; i++){
+        timeDifs.push((users[searchers[i]].total_workout_time) - (users[activeUser].total_workout_time));
+    }
+
+    for(var i=0; i<timeDifs.length; i++){
+        if(timeDifs[i] < leastTime){
+            leastTime = timeDifs[i];
+        }
+    }
+    match = searchers[timeDifs.indexOf(leastTime)];
+    if(match == undefined){
+        console.log("An error occurred!");
+    }
+    return match;
+}
+
+    setTimeout(function(){
+        bestMatch = getBestMatch();
+        database.ref("/Pairs/"+activeUser).update({
+            opponent: bestMatch
+        });
+    },3001);
+    setTimeout(function checkMultipleReqs(){
+        var matches;
+        var oppCount = 0;
+        var clashUsers = [];
+        database.ref("/Pairs/").on("value",snapshot=>{
+            matches = snapshot.val();
+        })
+        setTimeout(function(){
+            console.log(matches)
+            for(var i=0; i<Object.keys(matches).length; i++){
+                if(matches[Object.keys(matches)[i]].opponent == bestMatch){
+                    oppCount++;
+                }
+            }
+            console.log(oppCount);
+
+            if(oppCount > 1){
+              for(var i=0; i<Object.keys(matches).length; i++){
+                  if(matches[Object.keys(matches)[i]].opponent = bestMatch && matches[Object.keys(matches)[i]] !== activeUser){
+                    console.log(matches[Object.keys(matches)[i]]);
+                    clashUsers.push(matches[Object.keys(matches)[i]].opponent);
+                  }
+              }
+              console.log(clashUsers);
+            }
+        },3000);
+    },3003);
+        </script>
+    </body>
+</html>

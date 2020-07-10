@@ -1,0 +1,132 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+<style>
+    body{
+        padding: 0px;
+        margin: 0px;
+        background-color: #0F1012;
+        font-family: 'Poppins';
+    }
+    .elements{
+        font-size: 30px;
+        color: #B1B1B1;
+        margin-left: 30%;
+    }
+    .date{
+        color: #FF9400;
+        margin-left: 30%;
+    }
+    .back{
+        width: 25px;
+        height: 35px;
+        background: url(backarrow.png);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-position: center;
+        float:left;
+        transform: translateX(40px) translateY(50px);
+        transition: 0.6s;
+    }
+    #wait{
+        color: #FF9400;
+        font-family: 'Poppins';
+        font-weight: bold;
+        font-size: 40px;
+    }
+    .date-heads{
+        font-family: 'Poppins';
+        color: #FF9400;
+        margin-left: 50px;
+    }
+    .heads{
+        color: #FF9400;
+        margin-left: 50px;
+        font-size: 20px;
+    }
+    .vals{
+        color: #B1B1B1;
+        font-size: 20px;
+    }
+</style>
+    </head>
+    <body>
+        <a href="homepage.html"><div class="back"></div></a>
+        <center>
+        <h1 id="wait"></h1>
+        </center>
+        <script>
+            document.body.onload = function(){
+            document.getElementById("wait").innerHTML = ("Please wait while we load your workouts.")
+            }
+            const activeUsername = localStorage.getItem("step_fit_user_name_2277");
+            if(activeUsername == null){
+            location.replace("login.html")
+            }
+            const database = firebase.database();
+            var workouts;
+            database.ref("/Users/"+activeUsername+"/Workouts").on("value",snapshot=>{
+            workouts = snapshot.val();
+            });
+            setTimeout(function(){
+                document.getElementById("wait").innerHTML = ("Here are your workouts")
+                var workoutDates = Object.keys(workouts);
+                var days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+                var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+                for(var i=workoutDates.length-1; i>=0; i--){
+                    var day = (workoutDates[i].split(","))[0];
+                    var month = (workoutDates[i].split(","))[2];
+                    var dateHead = document.createElement("h1");
+                    if(days[(parseInt(day))] == 0){
+                        days[(parseInt(day))] = 1;
+                    }
+                    dateHead.innerHTML = (days[(parseInt(day))-1]+", "+(workoutDates[i].split(","))[1]+" "+months[parseInt(month)]+" "+workoutDates[i].split(",")[3]);
+                    dateHead.classList = "date-heads";
+                    document.body.appendChild(dateHead);
+                    for(var j=0; j<Object.keys(workouts[workoutDates[i]]).length; j++){
+                        var inDate = Object.keys(workouts[workoutDates[i]]);
+                        var ref = workouts[workoutDates[i]][inDate[j]];
+                        var heads = ["Start Time","End Time","Workout Time","Total Rounds","Average Time taken per Round","Calories Burnt"];
+                        ref.start_time = ref.start_time.split(",");
+                        ref.end_time = ref.end_time.split(",");
+                        var vals = [ref.start_time[0]+":"+ref.start_time[1],ref.end_time[0]+":"+ref.end_time[1],Math.floor(ref.total_time/60) + " Minutes " + Math.round(ref.total_time % 60) + " Seconds",ref.timeline.length,Math.round(parseInt(ref.average_per_round.split(",")[0]))+" Minutes " + Math.round(parseInt(ref.average_per_round.split(",")[1]))+" Seconds ",ref.calories_burnt];
+                        for(var k=0; k<vals.length; k++){
+                            var header = document.createElement("span");
+                            var value = document.createElement("span");
+                            header.innerHTML = (heads[k]+": ");
+                            value.innerHTML = (vals[k]+"<br>");
+                            header.classList = "heads";
+                            value.classList = "vals";
+                            document.body.appendChild(header);
+                            document.body.appendChild(value);
+                        }
+                        var sep = document.createElement("br");
+                        document.body.appendChild(sep)
+                    }
+                    var seperator = document.createElement("hr");
+                    document.body.appendChild(seperator);
+                }
+            },3000);
+        </script>
+    </body>
+</html>

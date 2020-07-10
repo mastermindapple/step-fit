@@ -1,0 +1,153 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+<style>
+
+                    body{
+                        padding: 0%;
+                        margin: 0%;
+                        width: 100%;
+                        background-color: #0F1012;
+                    }
+                .go-back{
+            width: 25px;
+                height: 35px;
+                background: url(backarrow.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-position: center;
+
+                float:left;
+                transform: translateX(40px) translateY(50px);
+                transition: 0.6s;
+        }
+
+        input[type="password"]{
+            border: 2px solid black;
+            flex: 1;
+            margin-top: 50px;
+            width: 50%;
+            height: 100px;
+            text-align: center;
+            border-radius: 10px;
+            font-size: 30px;
+            font-family: 'Poppins';
+            color: #FF9400;
+            background-color: #252628;
+        }
+        input[type="password"]:focus{
+            border-color: dodgerblue;
+            box-shadow: 0 0 8px 0 dodgerblue;
+        }
+
+        input[type="text"]{
+            border: 2px solid black;
+            flex: 1;
+            margin-top: 50px;
+            width: 50%;
+            height: 100px;
+            text-align: center;
+            border-radius: 10px;
+            font-size: 30px;
+            font-family: 'Poppins';
+            color: #FF9400;
+            background-color: #252628;
+        }
+        input[type="text"]:focus{
+            border-color: dodgerblue;
+            box-shadow: 0 0 8px 0 dodgerblue;
+        }
+
+        button{
+            margin-top: 50px;
+            height: 100px;
+            width: 100px;
+            background-color: white;
+            border-radius: 50%;
+            color: #FF9400;
+            font-size: 15px;
+            background-color: #252628;
+            font-family: 'Poppins';
+            border: none;
+        }
+        button:hover{
+            cursor: pointer;
+        }
+        button:focus{
+            border-color: dodgerblue;
+            box-shadow: 0 0 8px 0 dodgerblue;
+        }
+</style>
+    </head>
+    <body>
+        <a href="settings.html">
+            <div class="go-back">
+    
+            </div>
+            </a>
+        <center>
+        <input type="text" id="init-username" placeholder="Enter your username">
+        <br>
+        <input type="password" id="init-password" placeholder="Enter your password">
+        <br>
+        <button id="button">
+            Delete Account
+        </button>
+        </center>
+        <script>
+            const database = firebase.database();
+            const correctUsername = localStorage.getItem("step_fit_user_name_2277");
+            var correctPassword;
+            var usernameInput;
+            var usernamePassword;
+            document.getElementById("button").addEventListener("click",(e)=>{
+                e.preventDefault();
+                alert("Please wait while we delete your account");
+                usernameInput = document.getElementById("init-username").value;
+                if(correctUsername === usernameInput){
+                    database.ref("/Users/"+correctUsername+"/password").on("value",snapshot=>{
+                        correctPassword = snapshot.val();
+                    });
+                    setTimeout(checkPassword,3000);
+                }
+                else{
+                    alert("Incorrect Username");
+                }
+            })
+            function checkPassword(){
+                usernamePassword = document.getElementById("init-password").value;
+                if(correctPassword === usernamePassword){
+                    database.ref("/Users/"+correctUsername).remove();
+                    localStorage.removeItem("step_fit_user_name_2277");
+                    setTimeout(returnResult,3000);
+                }
+                else{
+                    alert("Invalid Password");
+                }
+            }
+            function returnResult(){
+                alert("Your account has been deleted");
+                location.replace("signup.html");
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,107 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+<style>
+    body{
+        background-color: #0f1012;
+    }
+    input{
+        height: 150px;
+        width: 700px;
+        font-size: 30px;
+        color: #ff9400;
+        font-family: 'Poppins';
+        text-align: center;
+        background-color: #252628;
+        transition: 0.6s;
+    }
+    
+    input:active{
+                border-radius: 10px;
+                transform: translateY(-10px);
+                -moz-box-shadow: 0px 3px 8px black;
+                -webkit-box-shadow: 0px 3px 8px black;
+                box-shadow: 0px 3px 8px black;
+    }
+    button{
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        font-size: 30px;
+        color: #ff9400;
+        font-family: 'Poppins';
+        border: none;
+        transition: 0.6s;
+    }
+    button:hover{
+                transform: translateY(-10px);
+                -moz-box-shadow: 0px 3px 8px black;
+                -webkit-box-shadow: 0px 3px 8px black;
+                box-shadow: 0px 3px 8px black;
+    }
+</style>
+    </head>
+    <body>
+        <center>
+            <input type="text" id="username" placeholder="Enter your Username">
+            <br>
+            <br>
+            <input type="password" id="password" placeholder="Enter your Password">
+            <br>
+            <br>
+            <input type="text" id="weight" placeholder="Enter your new weight">
+            <br>
+            <br>
+            <button id="btn">
+                GO!
+            </button>
+        </center>
+
+        <script>
+            const database = firebase.database();
+            const user = localStorage.getItem("step_fit_user_name_2277");
+            document.getElementById("btn").addEventListener('click',(e)=>{
+                e.preventDefault();
+                var inpUser = document.getElementById("username").value;
+                var inpPassword = document.getElementById("password").value;
+                var password;
+                database.ref("/Users/"+user+"/password").on('value',snapshot=>{
+                    password = snapshot.val();
+                })
+                setTimeout(function(){
+                if(inpUser === user && inpPassword === password){
+
+                        database.ref("/Users/"+user+"/").update({
+                            weight: parseInt(document.getElementById("weight").value)
+                        })
+                        alert("Weight Updated Succesfully!")
+                        location.replace("homepage.html");                   
+
+                    }
+                else{
+                    alert("Incorrect Username or password");
+                }
+                },3000);
+            })
+        </script>
+    </body>
+</html>

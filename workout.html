@@ -1,0 +1,143 @@
+<html>
+    <head>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+<style>
+  body{
+    padding: 0%;
+    margin: 0%;
+    width: 100%;
+    background-color: #0F1012;
+  }
+  .increment-btn{
+    height: 400px;
+    width: 40%;
+    margin-right: 10%;
+    font-size: 50px;
+    background-color: #252628;
+    font-family: 'Poppins';
+    color: #FF9400;
+    flex: 1;
+    border-radius: 10px;
+    border:none;
+  }
+
+
+  .end{
+    height: 400px;
+    width: 40%;
+    margin-right: 10%;
+    font-size: 50px;
+    background-color: #252628;
+    font-family: 'Poppins';
+    color: #FF9400;
+    flex:1;
+    border-radius: 10px;
+    border:none;
+  }
+  .end:active{
+    outline: yellow;
+  }
+  #btn-container{
+    display: flex;
+    transform: translateX(5%);
+  }
+
+  #history{
+    color: #B1B1B1;
+    font-family: 'Poppins';
+    font-size: 30px;
+  }
+
+  #currTime{
+    color: #FF9400;
+    font-family: 'Poppins';
+    font-weight: bold;
+    font-size: 30px;
+  }
+
+  #currTime-rest{
+    color: #B1B1B1;
+    font-family: 'Poppins';
+    font-size: 30px;
+  }
+  #rounds{
+    color: #FF9400;
+    font-family: 'Poppins';
+    font-weight: bold;
+    font-size: 30px;
+  }
+  #rounds-rest{
+    color: #B1B1B1;
+    font-family: 'Poppins';
+    font-size: 30px;
+  }
+  #total{
+    color: #FF9400;
+    font-family: 'Poppins';
+    font-weight: bold;
+    font-size: 30px;
+  }
+  #total-rest{
+    color: #B1B1B1;
+    font-family: 'Poppins';
+    font-size: 30px;
+  }
+</style>
+
+    </head>
+    <body>
+        <center> 
+          <div id="btn-container">
+            <button onclick="increment()" class="increment-btn" id="increment-btn">
+            Start Next Round 
+            </button>
+            <button id="end" class="end">
+              End Workout 
+                </button>
+          </div>
+            <div class="display">
+                <p id="currTime-rest">
+                  This Round's Time
+                  <span id="currTime">
+
+                  </span>
+                </p>
+                <p id="total-rest">
+                  Total workout time:
+                <span id="total">
+
+                </span>
+                </p>
+                <p id="rounds-rest">
+                  Rounds: 
+                  <span id="rounds">
+
+                  </span>
+                </p>
+                <p id="history">
+                  
+                </p>
+            </div>
+        </center>
+        <script src="script.js"></script>
+    </body>
+</html>

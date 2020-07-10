@@ -1,0 +1,140 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+        <style>
+            .header{
+                font-family: 'Poppins';
+                color: #ff9400;
+            }
+            .option-container{
+                transform: translateY(100px) translateX(200px);
+                height: 350px;
+                width: 600px;
+                display:flex;
+                flex-direction: row;
+                
+                transform: translateX(0%);
+            }
+            .random{
+                z-index: 1;
+                flex:1;
+                transition: 0.6s;
+                background-color: #252628;
+                border: 1px black solid;
+                height: 350px;
+                width: 150px;
+                margin: 0 5px;
+                border-radius: 10px;
+                transition: 0.6s;
+            }
+            .random-head{
+                font-family: 'Poppins';
+                color: #ff9400;
+            }
+            .friend{
+                flex: 1;
+                z-index: 2;
+                transition: 0.6s;
+                background-color: #252628;
+                border: 1px black solid;
+                height: 350px;
+                width: 150px;
+                margin: 0 5px;
+                border-radius: 10px;
+                transition: 0.6s;
+            }
+            .friend-head{
+                color: #ff9400;
+                font-family: 'Poppins';
+            }
+            body{
+                background-color: #0F1012;
+            }
+            .friend:hover{
+                cursor: pointer;
+                border-radius: 10px;
+                transform: translateY(-10px);
+                -moz-box-shadow: 0px 3px 8px black;
+                -webkit-box-shadow: 0px 3px 8px black;
+                box-shadow: 0px 3px 8px black;
+            }
+            .random:hover{
+                cursor: pointer;
+                border-radius: 10px;
+                transform: translateY(-10px);
+                -moz-box-shadow: 0px 3px 8px black;
+                -webkit-box-shadow: 0px 3px 8px black;
+                box-shadow: 0px 3px 8px black;
+            }
+            .go-back{
+            width: 25px;
+                height: 35px;
+                background: url(backarrow.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-position: center;
+
+                float:left;
+                transform: translateX(40px) translateY(50px);
+                transition: 0.6s;
+        }
+        </style>
+    </head>
+    <body>
+        <center>
+            <a href="homepage.html">
+                <div class="go-back">
+        
+                </div>
+                </a>
+        <h1 class="header">
+            How do you want to Play?
+        </h1>
+        <br>
+        <br>
+        <div class="option-container">
+            <div class="random" id="random">
+                <img src="random-icon.png" height=200>
+                <h1 class="random-head">
+                Play a Random Player
+                </h1>
+            </div>
+            <div class="friend" id="random">
+                <img src="friend-icon.png" height=200>
+                <h1 class="friend-head">
+                    Play a Friend
+                </h1>
+            </div>
+        </div>
+        </center>
+        <script>
+            document.getElementById("random").addEventListener("click",(e)=>{
+                e.preventDefault();
+                location.replace("multiplayer.html");
+            })
+            document.getElementById("friend").addEventListener("click",(e)=>{
+                e.preventDefault();
+                location.replace("friend-multiplayer.html");
+            })
+        </script>
+    </body>
+</html>

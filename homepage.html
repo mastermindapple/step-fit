@@ -1,0 +1,201 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+        <style>
+                body{
+                    padding: 0%;
+                    margin: 0%;
+                    width: 100%;
+                }
+            .background{
+                width: 100%;
+                height: 100%;
+                background-color: #0F1012;
+                background-size: 100% 100%;
+                 background-position: center;
+                 position: relative;
+            }
+            .options{
+                transform: translateY(100px) translateX(200px);
+                height: 350px;
+                width: 900px;
+                display:flex;
+                flex-direction: row;
+                transform: translateX(0%);
+            }
+            .workout{
+                z-index: 1;
+                height: 350px;
+                width: 200px;
+                background: url(1.png);
+                background-repeat: no-repeat;
+                flex: 1;
+                background-size: 100% 100%;
+                 background-position: center;
+                 width: 100%;
+                height: 100%;
+                transition: 0.6s;
+            }
+            .workout:hover{
+                cursor: pointer;
+                border-radius: 10px;
+                transform: translateY(-10px);
+                -moz-box-shadow: 0px 3px 8px black;
+                -webkit-box-shadow: 0px 3px 8px black;
+                box-shadow: 0px 3px 8px black;
+            }
+            .acheivments{
+                background: url(3.png);
+                z-index: 1;
+                height: 350px;
+                width: 200px;
+                background-repeat: no-repeat;
+                flex:1;
+                background-size: 100% 100%;
+                 background-position: center;
+                 width: 100%;
+                height: 100%;
+                transition: 0.6s;
+            }
+            .acheivments:hover{
+                cursor: pointer;
+                border-radius: 10px;
+                transform: translateY(-10px);
+                -moz-box-shadow: 0px 3px 8px black;
+                -webkit-box-shadow: 0px 3px 8px black;
+                box-shadow: 0px 3px 8px black;
+            }
+            .stats{
+                background: url(2.png);
+                background-size: 100% 100%;
+                 background-position: center;
+                z-index: 1;
+                height: 350px;
+                width: 200px;
+                background-repeat: no-repeat;
+                flex: 1;
+                transition: 0.6s;
+            }
+            .stats:hover{   
+                cursor: pointer;
+                border-radius: 10px;
+                transform: translateY(-10px);
+                -moz-box-shadow: 0px 3px 8px black;
+                -webkit-box-shadow: 0px 3px 8px black;
+                box-shadow: 0px 3px 8px black;
+            }
+            .settings-child{
+                background: url(multiplayer-icon.jpg);
+                background-size: 100% 100%;
+                 background-position: center;
+                z-index: 1;
+                height: 90%;
+                width: 85%;
+                background-repeat: no-repeat;
+                flex: 1;
+                border-radius: 30px;
+            }
+            .settings{
+                height: 350px;
+                width: 200px;
+                flex: 1;
+                transition: 0.6s;
+               
+            }
+            .settings:hover{
+                cursor: pointer;
+                transform: translateY(-10px);
+                -moz-box-shadow: 0px 3px 8px black;
+                -webkit-box-shadow: 0px 3px 8px black;
+                box-shadow: 0px 3px 8px black;
+                border-radius: 10px;
+            }
+            #name-display{
+                color: #FF9400;
+                font-family: 'Poppins';
+                font-size: 50px;
+            }
+            #rest{
+                color: #9B9796;
+                font-family: 'Poppins';
+                font-size: 50px;
+            }
+            .headers{
+                color: #D5D5D5;
+                font-family: 'Poppins';
+                font-size: 20px;
+                transform: translateY(200px);
+            }
+            .go-back{
+                width: 25px;
+                height: 35px;
+                background: url(backarrow.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-position: center;
+
+                float:left;
+                transform: translateX(40px) translateY(50px);
+                transition: 0.6s;
+            }
+        </style>
+    </head>
+    <body>
+        <center>
+        <div class="background">
+            <a href="home.html">
+            <div class="go-back"></div>
+            </a>
+            <div class="header">
+                <span id="name-display"></span><span id="rest"></span>
+            </div>
+            <br><br>
+            <div class="options">
+                <div class="workout" id="workout">
+                    <h1 class="headers">
+                    Workouts
+                    </h1>
+                </div>
+                <div class="stats" id="stats">
+                    <h1 class="headers">
+                    Statistics
+                    </h1>
+                </div>
+                <div class="acheivments" id="acheivments">
+                    <h1 class="headers">
+                    League
+                    </h1>
+                </div>
+                <div class="settings" id="settings">
+                    <div class="settings-child">
+                    <h1 class="headers">
+                    Multiplayer
+                    </h1>
+                    </div>
+                    </div>
+            
+            </div>
+        </div>
+        </center>
+        <script src="homepage.js"></script>
+    </body>
+</html>

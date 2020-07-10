@@ -1,0 +1,267 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
+<style>
+            body{
+                padding: 0%;
+                margin: 0%;
+                width: 100%;
+                background-color: #0F1012;
+            }
+            .heading{
+                font-family: 'Poppins';
+                color: #FF9400;
+                font-size:70px;
+            }
+            .points{
+                font-family: 'Poppins';
+                color: #D5D5D5;
+                font-size: 50px;
+                margin-top: 50px;
+            }
+            .values{
+                font-family: 'Poppins';
+                color: #FF9400;
+                font-size: 50px;
+                margin-top: 50px;
+                font-weight: bold;
+            }
+            .proceed-para{
+                font-family: 'Poppins';
+                font-size: 50px;
+                margin-top: 50px;
+                font-weight: bold;
+            }
+            a{
+                color: #FF9400;
+                background-color: white;
+                border: 1px solid black;
+                border-radius: 10px;
+            }
+            .pb-head{
+                color:#FF9400;
+                font-weight: bold;
+                font-family: 'Poppins';
+                font-size: 50px;
+            }
+            .pb-head-container{
+                background-color: #D5D5D5;
+                border-radius: 10px;
+                margin-bottom: 50px;
+                }
+                .timeline-ele{
+                font-family: 'Poppins';
+                color: #D5D5D5;
+                font-size: 50px;
+                }
+</style>
+    </head>
+    <body>
+        <center>
+            <h1 class="heading" id="heading">
+            
+                </h1>
+                <div class="pb-head-container">
+                    <h1 class="pb-head" id="pb-head"></h1>
+                </div>
+                <div class="insights-head-container">
+                    <h1 class="insights-head" id="insights-head">
+                    </h1>
+                </div>
+                <div class="insights-container">
+                    <span class="points" id="0h"></span><span id="0" class="values"></span>
+                    <br>
+                    <span class="points" id="1h"></span><span id="1" class="values"></span>
+                    <br>
+                    <span class="points" id="2h"></span><span id="2" class="values"></span>
+                    <br>
+                    <span class="points" id="3h"></span><span id="3" class="values"></span>
+                </div>
+                <div id="timeline" class="timeline">
+
+                </div>
+                <div class="proceed-container">
+                    <h1 class="proceed-para" id="proceed-para">
+
+                    </h1>
+                </div>
+        </center>
+        <script>
+            const activeUsername = localStorage.getItem("step_fit_user_name_2277");
+            if(localStorage.getItem("workout_res_status") == null){
+                alert("Please start a workout in order to get results.")
+                location.replace("home.html");
+            }
+            else{
+                localStorage.removeItem("workout_res_status");
+            }
+            if(activeUsername == null){
+                location.replace("login.html");
+            }
+            const database = firebase.database();
+            var lastWorkout;
+            var lastWorkoutDate;
+            var totalRounds;
+            var workoutHistory;
+            var minimumWorkoutTime;
+            var minimumTime;
+            var totalTime;
+            var totalWorkoutTime;
+            var longestWorkout;
+            var mostRounds;
+            var timeline;
+            var totalWorkouts;
+            var workoutMinutes;
+            var workoutSeconds;
+            var workoutRounds;
+            var weight;
+            var totalCals;
+            var workoutCals;
+            var averageWorkoutTime;
+            var recordDisplayStatus;
+
+            database.ref("/Users/"+activeUsername+"/workout_details/last_workout").on("value",snapshot=>{
+                 lastWorkout = snapshot.val();
+            });
+            database.ref("/Users/"+activeUsername+"/workout_details/last_workout_date").on("value",snapshot=>{
+                lastWorkoutDate = snapshot.val();
+            });
+
+            setTimeout(function(){
+                database.ref("/Users/"+activeUsername+"/Workouts/"+lastWorkoutDate+"/"+lastWorkout+"/total_time").on("value",snapshot=>{
+                 totalWorkoutTime = snapshot.val();
+                });
+                database.ref("/Users/"+activeUsername+"/Workouts/"+lastWorkoutDate+"/"+lastWorkout+"/timeline").on("value",snapshot=>{
+                timeline = snapshot.val();
+                });
+                database.ref("/Users/"+activeUsername+"/workout_history").on("value",snapshot=>{
+                workoutHistory = snapshot.val();  
+                })
+                database.ref("/Users/"+activeUsername+"/total_rounds").on("value",snapshot=>{
+                    totalRounds = snapshot.val();
+                })
+                database.ref("/Users/"+activeUsername+"/minimum").on("value",snapshot=>{
+                    minimumTime = snapshot.val();
+                });
+                database.ref("/Users/"+activeUsername+"/total_workout_time").on("value",snapshot=>{
+                totalTime = snapshot.val();
+                });
+                database.ref("/Users/"+activeUsername+"/personal_best").on("value",snapshot=>{
+                longestWorkout = snapshot.val();
+                })
+                database.ref("/Users/"+activeUsername+"/personal_best_rounds").on("value",snapshot=>{
+                mostRounds = snapshot.val();
+                })
+                database.ref("/Users/"+activeUsername+"/total_workouts").on("value",snapshot=>{
+                totalWorkouts = snapshot.val();
+                })
+                database.ref("/Users/"+activeUsername+"/weight").on("value",snapshot=>{
+                weight = snapshot.val();
+                })
+                database.ref("/Users/"+activeUsername+"/total_cals").on("value",snapshot=>{
+                totalCals = snapshot.val();
+                })
+
+            },3000);
+
+            setTimeout(function(){
+                minimumWorkoutTime = Math.min(...timeline);
+                workoutHistory = workoutHistory.toString(); 
+                workoutMinutes = Math.floor(totalWorkoutTime/60);
+                workoutSeconds = totalWorkoutTime % 60;
+                workoutRounds = timeline.length;
+                weight = Math.round(weight*2.20462);
+                workoutCals = Math.round(weight / 15.8 * (totalWorkoutTime/60));
+                averageWorkoutTime = getAverage(totalWorkoutTime);
+
+                if(workoutRounds > mostRounds){
+                    database.ref("/Users/"+activeUsername+"/").update({
+                        personal_best_rounds: workoutRounds
+                    })
+                    recordDisplayStatus = 1;
+                }
+                if(totalWorkoutTime > longestWorkout){
+                    database.ref("/Users/"+activeUsername+"/").update({
+                        personal_best: totalWorkoutTime
+                    })
+                    recordDisplayStatus = 1;
+                }
+                if(minimumWorkoutTime < minimumTime){
+                    database.ref("/Users/"+activeUsername+"/").update({
+                        minimum : minimumWorkoutTime
+                    });
+                    recordDisplayStatus = 1;
+                }     
+
+                if(recordDisplayStatus == 1){
+                    document.getElementById("pb-head").innerHTML = ("You Just Crushed records");
+                }
+                database.ref("/Users/"+activeUsername+"/").update({
+                total_workouts: totalWorkouts+1
+                });
+
+                if(workoutHistory == 0){
+                    database.ref("/Users/"+activeUsername+"/").update({
+                    workout_history: totalWorkoutTime
+                    });
+                }
+                else{
+                    database.ref("/Users/"+activeUsername+"/").update({
+                    workout_history: workoutHistory+","+totalWorkoutTime
+                    });
+                }
+                database.ref("/Users/"+activeUsername+"/").update({
+                    total_cals: totalCals + workoutCals
+                })
+                database.ref("/Users/"+activeUsername+"/").update({
+                    total_workout_time: totalTime + totalWorkoutTime
+                })
+                database.ref("/Users/"+activeUsername+"/").update({
+                    total_rounds: totalRounds + workoutRounds
+                })
+                database.ref("/Users/"+activeUsername+"/"+"Workouts"+"/"+lastWorkoutDate+"/"+lastWorkout).update({
+                    average_per_round: averageWorkoutTime.join(","),
+                    calories_burnt: workoutCals
+                })
+                var texts = [workoutMinutes+" Minutes"+" "+workoutSeconds+" Seconds",workoutRounds,Math.round(averageWorkoutTime[0])+" Minutes"+" "+Math.round(averageWorkoutTime[1])+" Seconds",workoutCals];
+                var headTexts = ["Total workout time: ","Total rounds: ","Average time taken per round: ","Calories Burnt in this workout: "];
+                for(var i=0; i<4; i++){
+                document.getElementById(i+"h").innerHTML = headTexts[i];
+                document.getElementById(i.toString()).innerHTML = texts[i];
+        }
+        for(var i=0; i<timeline.length; i++){
+            var ele = document.createElement("p");
+            ele.classList = "timeline-ele";
+            ele.innerHTML = ("Round "+(i+1)+": "+Math.floor(timeline[i]/60)+" Minutes  "+timeline[i]%60+" Seconds<br>");
+            document.getElementById("timeline").appendChild(ele);
+        }
+        document.getElementById("proceed-para").innerHTML = ("<a href='home.html'>Proceed</a>");
+            },6000);
+
+            function getAverage(){
+                var sum = 0;
+                for(var i=0; i<timeline.length; i++){
+                    sum += timeline[i];
+                }
+                var avg = sum/timeline.length;
+                return [Math.floor(avg/60),avg%60];
+            }
+        </script>
+    </body>
+</html>
+
+

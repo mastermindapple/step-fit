@@ -1,0 +1,250 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBY6AtBF43O9cPzQI_lNgSavrDmK7lskME",
+    authDomain: "workout-664b7.firebaseapp.com",
+    databaseURL: "https://workout-664b7.firebaseio.com",
+    projectId: "workout-664b7",
+    storageBucket: "workout-664b7.appspot.com",
+    messagingSenderId: "168722182846",
+    appId: "1:168722182846:web:b57fe2f1c601872d6aa4ef"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+    <style>
+        body{
+            padding: 0%;
+            margin: 0px;
+            width: 100%;
+            background-color: #0F1012;
+        }
+        table{
+            width: 90%;
+            margin-left: 10px;
+            border-collapse: collapse;
+        }
+        th, td {
+  text-align: center;
+  padding: 8px;
+  width: 50%;
+}
+    th{
+        font-size: 50px;
+        font-family: 'Poppins';
+        background-color: #252628;
+         color: white;
+    }
+.two{
+    color: white;
+    background-color: #ff9400;
+}
+    td{
+        background-color: #252628;
+        font-size: 25px;
+        font-family: 'Poppins';
+         color: white;
+    }
+    td:nth-child(odd){
+        background-color: #ff9400;
+        font-size: 25px;
+        font-family: 'Poppins';
+         color: white;
+    }
+    .league-display{
+        font-size: 50px;
+        font-family: 'Poppins';
+         color: #ff9400;
+    }
+    .minute-display{
+        font-size: 50px;
+        font-family: 'Poppins';
+         color: #b1b1b1;
+    }
+    .go-back{
+            width: 25px;
+                height: 35px;
+                background: url(backarrow.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-position: center;
+
+                float:left;
+                transform: translateX(40px) translateY(50px);
+                transition: 0.6s;
+        }
+        #bg{
+            margin: 0px;
+        }
+        #bg{
+            height: 20px;
+            width: 400px;
+        }
+        #myCanvas{
+            margin: 0px;
+            height: 20px;
+            width: 400px;
+            transform: translateX(5px) translateY(-7px);
+        }
+        #bg-span{
+            transition: 0.6s;
+            color: #b1b1b1;
+            font-family: 'Poppins';
+            margin: 0px;
+        }
+        #mc-span{
+            transition: 0.6s;
+            color: #b1b1b1;
+            font-family: 'Poppins';
+            margin: 0px;
+        }
+    </style>
+    </head>
+    <body onload="invisible()">
+        <a href="homepage.html">
+            <div class="go-back">
+    
+            </div>
+            </a>
+        <center>
+            <table>
+                <tr>
+                <th>
+                    League
+                </th>
+                <th class="two">
+                    Workout Time
+                </th>
+            </tr>
+                <tr>
+         <td>Bronze</td>
+         <td>
+             1 minute
+         </td>
+                </tr>
+                <tr>
+                    <td>
+                        Silver
+                    </td>
+                    <td>
+                        60 minutes
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Gold
+                    </td>
+                    <td>
+                        180 minutes
+                    </td>
+                </tr>
+                <tr>
+                    <td>Platinum</td>
+                    <td>360 minutes</td>
+                </tr>
+                <tr>
+                    <td>
+                        Diamond
+                    </td>
+                    <td>
+                        720 minutes
+                    </td>
+                </tr>
+                <tr>
+                    <td>Elite</td><td>1440 minutes</td>
+                </tr>
+            </table>
+            <br>
+            <canvas id="bg" onmouseout="invisible()" onmouseover="visible()"></canvas>
+            <span id="bg-span"></span>
+            <br>
+            <canvas id="myCanvas" onmouseout="invisible()" onmouseover="visible()"></canvas>
+            <span id="mc-span"></span>
+            <br>
+            <div class="display">
+                <p class="minute-display" id="minute-display">
+
+                </p>
+                <p class="league-display" id="league-display"></p>
+            </div>
+        </center>
+        <script>
+                var workoutTime;
+                var league;
+                var leagues = ["None","Bronze","Silver","Gold","Platinum","Diamond","Elite"];
+                var times = [0,1,60,180,360,720,1440]
+                const username = localStorage.getItem("step_fit_user_name_2277");
+                var database = firebase.database();
+                var disp;
+                database.ref("/Users/"+username+"/total_workout_time").on("value",snapshot=>{
+                    workoutTime = snapshot.val();
+                });
+            setTimeout(function(){
+                disp = workoutTime;
+                workoutTime = Math.floor(workoutTime / 60);
+                if(workoutTime === 0){
+                    league = 0;
+                }
+                if(workoutTime >= 1 && workoutTime <= 59){
+                    league = 1;
+                }
+                if(workoutTime >= 60 && workoutTime <= 179){
+                   league = 2;
+                }
+                if(workoutTime >= 180 && workoutTime <= 359){
+                    league = 3;
+                }
+                if(workoutTime >= 360 && workoutTime <= 719 ){
+                    league  = 4;
+                }
+                if(workoutTime >= 720 && workoutTime <= 1439){
+                    league = 5;
+                }
+                if(workoutTime >= 1440){
+                    league = 6;
+                }
+                document.getElementById("minute-display").innerHTML = ("Your workout Time: "+Math.floor(disp/60)+" Minutes "+Math.round(disp % 60)+" Seconds");
+                document.getElementById("league-display").innerHTML = ("Your League: "+leagues[league]);
+
+                var width = ((disp/(times[league+1]*60 - disp))*100)/2;
+                console.log(width);
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+                ctx.beginPath();
+                ctx.rect(20, 20, width*2.5, 220);
+                ctx.fillStyle = "red";
+                ctx.fill();
+
+                var ctxTwo = document.getElementById("bg").getContext("2d");
+                ctxTwo.beginPath();
+                ctxTwo.rect(20, 20, 250, 220);
+                ctxTwo.fillStyle = "blue";
+                ctxTwo.fill();
+                document.getElementById("bg-span").innerHTML = (leagues[league+1]);
+                document.getElementById("mc-span").innerHTML = (leagues[league]);
+            },3000);
+            function invisible(){
+                document.getElementById("bg-span").style.opacity = "0%";   
+                document.getElementById("mc-span").style.opacity = "0%";   
+            }
+            function visible(){
+                document.getElementById("bg-span").style.opacity = "100%";
+                document.getElementById("mc-span").style.opacity = "100%";   
+            }
+            
+            
+        </script>
+        <script>
+
+        </script>
+    </body>
+</html>
