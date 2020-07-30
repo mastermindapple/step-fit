@@ -51,6 +51,7 @@
         }
 </style>
     <body>     
+        <script src="preventClear.js"></script>
         <a href="homepage.html">
             <div class="go-back">
     
@@ -78,6 +79,10 @@
                avg = sum/workoutHist.length;;
                return Math.floor(avg/60)+" Minutes " + Math.round(avg%60)+" Seconds"
            }
+           if(stats.total_workouts == 0){
+               alert("Please start a workout to continue.");
+               location.replace('home.html');
+           } 
            const titles = ["Total Workout Time","Total Workouts","Average Workout Time","Total Rounds","Fastest Round","Longest Workout","Most Rounds in a Workout","Average Time taken to complete One round","Total Calories Burnt"];
            const values = [Math.floor(stats.total_workout_time/60)+" Minutes  "+Math.round(stats.total_workout_time%60)+" Seconds",
            stats.total_workouts,
